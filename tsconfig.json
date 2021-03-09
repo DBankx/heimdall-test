@@ -16,6 +16,6 @@
     "noEmit": false,
     "esModuleInterop": true
   },
-  "include": ["./src/**/*", ".env"],
+  "include": ["./src/**/*", ".env", "./typings-custom/**/*.ts"],
   "exclude": ["node_modules"]
 }

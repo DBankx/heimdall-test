@@ -81,9 +81,9 @@ class App {
     const options = {
       swaggerDefinition: {
         info: {
-          title: 'REST API',
+          title: 'HEIMDALL LIBRARY MANAGEMENT TEST',
           version: '1.0.0',
-          description: 'Example docs',
+          description: 'A test app for heimdall',
         },
       },
       apis: ['swagger.yaml'],

@@ -5,6 +5,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
+    "seed": "node ./databse/seeder.js",
     "start": "npm run build && cross-env NODE_ENV=production node build/server.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "tsc",
@@ -28,6 +29,7 @@
     "jest": "^26.6.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.1",
+    "mongoose-seed": "^0.6.0",
     "morgan": "^1.10.0",
     "swagger-jsdoc": "^6.0.0",
     "swagger-ui-express": "^4.1.6",

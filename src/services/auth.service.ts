@@ -17,7 +17,7 @@ class AuthService {
     if (findUser) throw new HttpException(409, `You're email ${userData.email} already exists`);
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    const createUserData: User = await this.users.create({ ...userData, password: hashedPassword });
+    const createUserData: User = await this.users.create({ ...userData, password: hashedPassword , avatar: `https://ui-avatars.com/api/?name=${userData.email}&rounded=true&bold=true&background=FCDADC&color=3D3373`});
 
     return createUserData;
   }

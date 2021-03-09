@@ -1,4 +1,4 @@
-import { model, Schema, Document } from 'mongoose';
+import { model, Schema, Document,  } from 'mongoose';
 import { User } from '../interfaces/users.interface';
 
 const userSchema: Schema = new Schema({
@@ -11,6 +11,18 @@ const userSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  avatar: {
+    type: String,
+    required: true
+  },
+  borrowedBooks:[
+    {
+      book: {
+        type: Schema.Types.ObjectId,
+        ref: "book"
+      }
+    }
+  ]
 });
 
 const userModel = model<User & Document>('User', userSchema);

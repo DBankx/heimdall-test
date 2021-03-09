@@ -44,7 +44,6 @@ class App {
     if (this.env !== 'production') {
       set('debug', true);
     }
-
     connect(dbConnection.url, dbConnection.options)
       .then(() => {
         logger.info('🟢 The database is connected.');

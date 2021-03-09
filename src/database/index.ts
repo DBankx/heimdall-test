@@ -1,7 +1,7 @@
-const { MONGO_HOST, MONGO_PORT, MONGO_DATABASE } = process.env;
+const { MONGO_LIVE_URI } = process.env;
 
 export const dbConnection = {
-  url: `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`,
+  url: `${MONGO_LIVE_URI}`,
   options: {
     useNewUrlParser: true,
     useUnifiedTopology: true,

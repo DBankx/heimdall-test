@@ -1,11 +1,13 @@
 ﻿import React from "react";
 import {Box, FormControl, FormErrorMessage, Input, Stack, Select, Button} from "@chakra-ui/react";
 import {Formik} from "formik";
+import {StringParam, useQueryParam} from "use-query-params";
 
 const Search = () => {
+  const [title, setTitle] = useQueryParam("title", StringParam);
   return (
     <Box>
-      <Formik initialValues={{title: ""}} onSubmit={values => console.log(values)}>
+      <Formik initialValues={{title: title ? title : ""}} onSubmit={values => setTitle(values.title)}>
         {({
           handleSubmit,
           values,

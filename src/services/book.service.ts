@@ -12,8 +12,8 @@ class BookService {
   public users = userModel;
 
   // GET all books in db
-  public async getAllBooks(): Promise<Book[]> {
-    const books: Book[] = await this.books.find();
+  public async getAllBooks(title: string): Promise<Book[]> {
+    const books: Book[] = await this.books.find({"title": {$regex: isEmpty(title) ? "" : title, $options: "i"}});
     return books;
   }
 

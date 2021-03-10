@@ -8,9 +8,9 @@ interface IProps extends RouteProps{
 }
 
 const PrivateRoute: React.FC<IProps> = ({component:  Component, ...rest}) => {
-  const {isLoggedIn} = useContext(storeContext);
+  const token = localStorage.getItem("token");
   return (
-    <Route {...rest} render={(props) => isLoggedIn ? <Component {...props} /> : <Redirect to='/login' />} />
+    <Route {...rest} render={(props) => token ? <Component {...props} /> : <Redirect to='/login' />} />
   )
 }
 

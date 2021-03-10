@@ -9,8 +9,16 @@
 body{
   font-family: 'Karla', sans-serif !important;
   position: relative;
+  overflow-x: hidden !important;
 }
 
+.content{
+  min-height: calc(100vh - 40px);
+}
+
+footer{
+  height: 40px;
+}
 
 .auth__box{
   background-color: #062863;
@@ -88,15 +96,8 @@ body{
 }
 
 .navbar{
-  height: 50px !important;
-  margin: 0.7em 0 !important;
-}
-
-.middle__position{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(50%, 50%);
+  height: 100% !important;
+  padding: 0.5em !important;
 }
 
 

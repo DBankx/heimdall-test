@@ -16,15 +16,15 @@ import {
 import {NavLink, Link} from "react-router-dom";
 import {history} from "../../index";
 import {ChevronDownIcon} from "@chakra-ui/icons";
-import Loader from "../../application/layout/Spinner";
+import LoaderInline from "../../application/layout/Spinner";
 
 const Navbar = () => {
   const {user, logout} = useContext(storeContext);
   const [isMobile] = useMediaQuery("(max-width: 500px)")
-  if(!user) return <Loader />;
+  if(!user) return <LoaderInline />;
   return (
     <header className="nav">
-      <Container maxW="container.lg">
+      <Container maxW="container.lg" height="50px">
     <nav className="navbar">
            <HStack>
              <Box>

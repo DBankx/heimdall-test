@@ -4,6 +4,7 @@ import {AuthRequest, BookRequest} from "../api/agent";
 import {createContext} from "react";
 import {IBook} from "../../infrastructure/models/book";
 import {history} from "../../index";
+import {toast} from "react-toastify";
 
 // Ensure mobx always runs in action
 configure({enforceActions: "always"});
@@ -33,7 +34,7 @@ class AppStore{
 
   // check if a user is logged in
   @computed get isLoggedIn(){
-    return !!this.user;
+    return this.user !== null;
   }
 
   // login a user
@@ -46,6 +47,7 @@ class AppStore{
         this.appLoaded = true;
       })
     }catch (error){
+      toast.error("Invalid credentials");
       throw error;
     }
   }
@@ -55,19 +57,20 @@ class AppStore{
     try{
       const user = await AuthRequest.signUp(values);
       runInAction(() => {
-        this.user = user.data;
-        localStorage.setItem("token", user.token);
         this.appLoaded = true;
       })
     }catch (error){
+      toast.error("Invalid credentials");
       throw error;
     }
   }
 
+  // load the app
   @action loadApp = () => {
     this.appLoaded = true;
   }
 
+  // get the currently logged in user
   @action getCurrentUser = async () => {
     try{
       const user = await AuthRequest.getCurrentUser();
@@ -76,24 +79,28 @@ class AppStore{
         this.loadApp();
       })
     }catch (error) {
+      toast.error("Error occured fetching profile");
      throw error;
     }
   }
 
-  @action getAllBooks = async () => {
+  // get all books in library
+  @action getAllBooks = async (title: string) => {
     this.loadingBooks = true;
     try{
-      const bookData = await BookRequest.getAllBooks();
+      const bookData = await BookRequest.getAllBooks(title);
       runInAction(() => {
         this.books = bookData.data;
         this.loadingBooks = false;
       })
     }catch (e) {
       runInAction(() => this.loadingBooks = false);
+      toast.error("Error occurred fetching books");
      throw e;
     }
   }
 
+  // get a book by id
   @action getBookById = async (bookId: string) => {
     this.loadingBook = true;
     try{
@@ -105,10 +112,12 @@ class AppStore{
       })
     }catch (error){
       runInAction(() => this.loadingBook = false);
+      toast.error("Error occurred fetching books");
       throw error;
     }
   }
 
+  // borrow a book
   @action borrowBook = async (bookId: string) => {
     this.loadingBookAction = true;
     try{
@@ -127,13 +136,16 @@ class AppStore{
           this.user!.borrowedBooks.push(this.book._id);
         }
         this.loadingBookAction = false;
+        toast.success("Book borrowed successful");
       })
     }catch (error) {
       runInAction(() => this.loadingBookAction = false);
+      toast.error("Error occurred borrowing book");
       throw error;
     }
   }
 
+  // return a book
   @action returnBook = async (bookId: string) => {
     this.loadingBookAction = true;
     try{
@@ -157,13 +169,16 @@ class AppStore{
 
         this.user!.borrowedBooks = this.user!.borrowedBooks.filter(x => x !== bookId);
         this.loadingBookAction = false;
+        toast.success("Book returned successfully")
       })
     }catch (error) {
       runInAction(() => this.loadingBookAction = false);
+      toast.error("Error occurred returning book");
       throw error;
     }
   }
 
+  // get users borrowed books
   @action getBorrowedBooks = async () => {
     this.loadingBooks = true;
     try{
@@ -174,10 +189,12 @@ class AppStore{
       })
     }catch (e) {
       runInAction(() => this.loadingBooks = false);
+      toast.error("Error occurred get your books");
       throw e;
     }
   }
 
+  // logout user
   @action logout = async () => {
     this.user = null;
     localStorage.removeItem("token");

@@ -18,14 +18,14 @@ const BorrowedBooks = () => {
   if(loadingBooks || borrowedBooks == null) return <Loader />
 
   return (
-    <Box>
+    <Box mt={5}>
       <Container maxW="container.lg">
       <HStack>
         <Image src={user?.avatar} alt="avatar" width="100px" height="100px" />
         <Box>
         <h2>{user?.email}</h2>
           <p style={{fontWeight: "bold"}} className="auth__label">You have currently borrowed {user?.borrowedBooks.length} book(s)</p>
-          
+
         </Box>
       </HStack>
         <Box mt={5} mb={5}>

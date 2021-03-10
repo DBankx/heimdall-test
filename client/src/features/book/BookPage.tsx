@@ -1,19 +1,20 @@
 ﻿import React, {useContext, useEffect} from "react";
 import {observer} from "mobx-react-lite";
-import {Box, HStack, Image, Button, Badge, Spacer, Divider} from "@chakra-ui/react";
+import {Box, HStack, Image, Button, Badge, Spacer, Divider, Container} from "@chakra-ui/react";
 import {StringParam, useQueryParam} from "use-query-params";
 import storeContext from "../../application/store/store";
 import LoaderInline from "../../application/layout/LoaderInline";
-import {Link, useHistory, useLocation} from "react-router-dom";
+import {Link,  useLocation, useParams} from "react-router-dom";
 import {StarIcon, CopyIcon, CheckIcon, NotAllowedIcon} from "@chakra-ui/icons";
 import {BsBook, BsLink45Deg} from "react-icons/bs";
 
-const BookPage = (props: any) => {
+const BookPage = () => {
   const [bookPane, setBook] = useQueryParam("bookPane", StringParam);
   let bookId = "";
+  const params = useParams<{id: string}>();
   const location = useLocation();
-  if(location.pathname === "/book"){
-    bookId = props.match.params.id;
+  if(location.pathname.startsWith("/book")){
+    bookId = params.id;
   } else {
     bookId = bookPane!;
   }
@@ -24,8 +25,12 @@ const BookPage = (props: any) => {
   if(book === null || loadingBook) return <LoaderInline />
   const iterator = [...Array(Math.floor(book.rating))];
   return (
-    <Box className={location.pathname.startsWith("book") ? "book__item__box maxed" : ""} p="0">
+    <Box className={location.pathname.startsWith("/book") ? "" : "book__item__box maxed"} p="0">
+      <Container maxW={location.pathname.startsWith("/book") ? "container.lg" : ""} >
       <Box p="1.25em" pb="0">
+        <Box mb={4}>
+        {location.pathname.startsWith("/book") && <Link to="/" style={{color: "#237EA3"}}>&#8592; back</Link>}
+        </Box>
       <HStack spacing="10px" alignItems="flex-start" >
         <Image src={book.images[0]} alt="book-photo" className="book__item__img" />
         <Box>
@@ -58,7 +63,7 @@ const BookPage = (props: any) => {
       </Box>
 
       <HStack mt={5}>
-        {book.isBorrowed ? <Button onClick={() => returnBook(book._id)} isLoading={loadingBookAction} className="borrow__btn">Return copy</Button> : <Button isLoading={loadingBookAction} onClick={() => borrowBook(book._id)} disabled={book.isBorrowed || user!.borrowedBooks.length >= 2 || book.copies <= 1} className="borrow__btn">
+        {book.isBorrowed ? <Button disabled={loadingBookAction} onClick={() => returnBook(book._id)} isLoading={loadingBookAction} className="borrow__btn">Return copy</Button> : <Button isLoading={loadingBookAction} onClick={() => borrowBook(book._id)} disabled={book.isBorrowed || user!.borrowedBooks.length >= 2 || book.copies <= 1 || loadingBookAction} className="borrow__btn">
           Borrow a copy
         </Button>}
         <Spacer />
@@ -75,6 +80,7 @@ const BookPage = (props: any) => {
           <small style={{fontWeight: "bold"}}>Published {book.publishedDate}</small>
         </Box>
       </Box>
+      </Container>
     </Box>
   )
 }

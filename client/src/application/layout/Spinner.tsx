@@ -1,9 +1,11 @@
 ﻿import React from "react";
-import {Box, Spinner} from "@chakra-ui/react";
+import {Center, Container, Spinner, Box} from "@chakra-ui/react";
 
 const Loader = () => {
   return (
-    <Box className="middle__position">
+    <Box>
+      <Container maxW="container.lg">
+        <Center mt="2em">
       <Spinner
         thickness="4px"
         speed="0.65s"
@@ -11,6 +13,8 @@ const Loader = () => {
         color="blue.500"
         size="xl"
       />
+        </Center>
+      </Container>
     </Box>
   )
 }

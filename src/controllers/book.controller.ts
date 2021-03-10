@@ -8,8 +8,9 @@ class BookController {
   public bookService = new BookService();
 
   public getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
+    var title = req.query.title as string;
     try{
-      const getAllBooks: Book[] = await this.bookService.getAllBooks();
+      const getAllBooks: Book[] = await this.bookService.getAllBooks(title);
       res.status(200).json({data: getAllBooks, message: "getAll"});
     }catch (error) {
      next(error);

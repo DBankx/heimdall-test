@@ -17,10 +17,8 @@ const userSchema: Schema = new Schema({
   },
   borrowedBooks:[
     {
-      _id: {
-        type: Schema.Types.ObjectId,
-        ref: "book"
-      }
+      type: Schema.Types.ObjectId,
+      ref: 'Book'
     }
   ]
 });

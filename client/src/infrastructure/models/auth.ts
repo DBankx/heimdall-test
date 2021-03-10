@@ -9,5 +9,5 @@ export interface IUser{
   _id: string;
   email: string;
   avatar: string;
-  borrowedBooks: IBook[];
+  borrowedBooks: string[];
 }

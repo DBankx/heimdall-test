@@ -37,6 +37,7 @@ body{
   padding: 2em;
   max-width: 28em;
   width: 28em;
+  background-color: #fff;
 }
 
 @media (max-width: 500px) {
@@ -133,6 +134,9 @@ body{
   height: 100px !important;
 }
 
+.active__nav{
+  color: #237EA3;
+}
 
 .book__item__link{
   line-height: 1.625rem !important;

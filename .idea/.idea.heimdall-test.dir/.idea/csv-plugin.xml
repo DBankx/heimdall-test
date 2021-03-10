@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\client\src\features\auth\SignUpForm.tsx">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\client\src\features\book\BookItem.tsx">
           <value>
             <Attribute>

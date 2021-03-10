@@ -4,6 +4,9 @@
   "description": "TypeScript + Mongoose + MongoDB + Express API Server",
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "seed": "node ./databse/seeder.js",
     "start": "npm run build && cross-env NODE_ENV=production node build/server.js",
@@ -11,7 +14,8 @@
     "build": "tsc",
     "test": "jest --forceExit --detectOpenHandles",
     "lint": "eslint --ignore-path .gitignore --ext .ts src/",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

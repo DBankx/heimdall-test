@@ -1,6 +1,6 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express from 'express';
+import express, {Response, Request} from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
@@ -12,6 +12,7 @@ import { dbConnection } from './database';
 import Routes from './interfaces/routes.interface';
 import errorMiddleware from './middlewares/error.middleware';
 import { logger, stream } from './utils/logger';
+import path from "path";
 
 class App {
   public app: express.Application;
@@ -28,6 +29,7 @@ class App {
     this.initializeRoutes(routes);
     this.initializeSwagger();
     this.initializeErrorHandling();
+    this.deployApplication();
   }
 
   public listen() {
@@ -94,6 +96,18 @@ class App {
 
   private initializeErrorHandling() {
     this.app.use(errorMiddleware);
+  }
+
+  private deployApplication(){
+    if(process.env.NODE_ENV === "production"){
+      this.app.use(express.static(path.join(__dirname, "/client/build")));
+
+      this.app.get("*", (req: Request, res: Response) =>
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+      );
+    } else {
+      this.app.get("/", (req: Request, res: Response) => res.send("server is running"))
+    }
   }
 }
 

@@ -4,20 +4,27 @@ import {Box, HStack, Image, Button, Badge, Spacer, Divider} from "@chakra-ui/rea
 import {StringParam, useQueryParam} from "use-query-params";
 import storeContext from "../../application/store/store";
 import LoaderInline from "../../application/layout/LoaderInline";
-import {Link} from "react-router-dom";
+import {Link, useHistory, useLocation} from "react-router-dom";
 import {StarIcon, CopyIcon, CheckIcon, NotAllowedIcon} from "@chakra-ui/icons";
 import {BsBook, BsLink45Deg} from "react-icons/bs";
 
-const BookPage = () => {
+const BookPage = (props: any) => {
   const [bookPane, setBook] = useQueryParam("bookPane", StringParam);
+  let bookId = "";
+  const location = useLocation();
+  if(location.pathname === "/book"){
+    bookId = props.match.params.id;
+  } else {
+    bookId = bookPane!;
+  }
   const {loadingBook, book, getBookById, user, loadingBookAction, borrowBook, returnBook} = useContext(storeContext);
   useEffect(() => {
-    getBookById(bookPane!);
-  }, [getBookById, bookPane])
+    getBookById(bookId);
+  }, [getBookById, bookId])
   if(book === null || loadingBook) return <LoaderInline />
   const iterator = [...Array(Math.floor(book.rating))];
   return (
-    <Box className="book__item__box maxed" p="0">
+    <Box className={location.pathname.startsWith("book") ? "book__item__box maxed" : ""} p="0">
       <Box p="1.25em" pb="0">
       <HStack spacing="10px" alignItems="flex-start" >
         <Image src={book.images[0]} alt="book-photo" className="book__item__img" />

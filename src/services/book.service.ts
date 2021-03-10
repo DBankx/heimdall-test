@@ -62,14 +62,10 @@ class BookService {
     // check if user has borrowed more than two books
     if (user.borrowedBooks.length >= 2) throw new HttpException(400, "You have borrowed 2 books or more!. Kindly return one")
 
-    // create a new borrow object with the book id
-    let newBorrow = {
-      _id: book._id
-    }
 
     // update the users borrowedBooks array to add the new book
     await this.users.findByIdAndUpdate(user._id, {
-      $push: {borrowedBooks: newBorrow}
+      $push: {borrowedBooks: book}
     });
 
     // remove one from the amount of copies in the library
@@ -92,13 +88,15 @@ class BookService {
     if(user.borrowedBooks.filter((book) => book._id.toString() === bookId).length < 1) throw new HttpException(400, "You haven't borrowed this book yet");
 
     // remove the book from the users borrowed book
-    await this.users.findByIdAndUpdate(userId, {$pull: { borrowedBooks: {_id: book._id}}});
+    await this.users.findByIdAndUpdate(userId, {$pull: { borrowedBooks: book._id}});
 
     // add the copy back to the library
     await this.books.findByIdAndUpdate(bookId, {copies: book.copies + 1});
 
     return "Book successfully returned";
   }
+
+
 
 }
 

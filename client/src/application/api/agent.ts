@@ -26,7 +26,8 @@ export const AuthRequest = {
   signUp: (values: IAuthFormValues)  => requests.post(`/signup`, values),
   login: (values: IAuthFormValues)  => requests.post(`/login`, values),
   logout: (): Promise<Record<string, unknown>> => requests.post(`/logout`),
-  getCurrentUser: () => requests.get(`/user`)
+  getCurrentUser: () => requests.get(`/user`),
+  getBorrowedBooks: () => requests.get(`/users/books`)
 }
 
 export const BookRequest = {

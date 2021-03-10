@@ -9,6 +9,9 @@ import HomePage from "../../features/home/HomePage";
 import storeContext from "../store/store";
 import Loader from "./Spinner";
 import {observer} from "mobx-react-lite";
+import BorrowedBooks from "../../features/auth/BorrowedBooks";
+import BookPage from "../../features/book/BookPage";
+import SignUpForm from "../../features/auth/SignUpForm";
 
 const theme = extendTheme(chakraTheme);
 
@@ -31,6 +34,9 @@ function App() {
       <Switch>
         <Route exact path="/login" component={LoginForm} />
         <Route exact path="/" component={HomePage} />
+        <Route exact path="/book/:id" component={BookPage} />
+        <Route exact path="/borrowed" component={BorrowedBooks} />
+        <Route exact path="/signup" component={SignUpForm}/>
       </Switch>
     </div>
     </ChakraProvider>

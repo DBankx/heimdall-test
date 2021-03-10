@@ -1,5 +1,5 @@
 ﻿import React, {useContext, useEffect} from "react";
-import {Box, Container, SimpleGrid} from "@chakra-ui/react";
+import {Box, Container, SimpleGrid, useMediaQuery} from "@chakra-ui/react";
 import {observer} from "mobx-react-lite";
 import Search from "./Search";
 import storeContext from "../../application/store/store";
@@ -11,6 +11,8 @@ import BookPage from "../book/BookPage";
 const HomePage = () => {
   const {loadingBooks, books, getAllBooks, book} = useContext(storeContext);
   const [bookPane, setBook] = useQueryParam("bookPane", StringParam);
+  const [isMobile] = useMediaQuery("(max-width: 500px)")
+
   useEffect(() => {
     getAllBooks();
   }, [getAllBooks])
@@ -28,15 +30,17 @@ const HomePage = () => {
               <Box>
                 <small style={{fontWeight: "bold"}}>{books.length} books found</small>
               </Box>
-              {books.map((book) => (
+              {books.length > 0 ? books.map((book) => (
                 <Box mb={5} key={book._id}>
                   <BookItem book={book} />
                 </Box>
-              ))}
+              )) : (
+                <h2 className="auth__header">There are no books currently available in the library</h2>
+              )}
             </Box>
 
             <Box>
-              { bookPane && (
+              { !isMobile && bookPane && (
                 <BookPage />
               )}
             </Box>

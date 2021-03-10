@@ -3,6 +3,7 @@ import {IAuthFormValues, IUser} from "../../infrastructure/models/auth";
 import {AuthRequest, BookRequest} from "../api/agent";
 import {createContext} from "react";
 import {IBook} from "../../infrastructure/models/book";
+import {history} from "../../index";
 
 // Ensure mobx always runs in action
 configure({enforceActions: "always"});
@@ -28,6 +29,7 @@ class AppStore{
   @observable book: IBook | null = null;
   @observable loadingBook = false;
   @observable loadingBookAction = false;
+  @observable borrowedBooks : IBook[] | null = null;
 
   // check if a user is logged in
   @computed get isLoggedIn(){
@@ -38,6 +40,20 @@ class AppStore{
   @action loginUser = async (values: IAuthFormValues) => {
     try{
       const user = await AuthRequest.login(values);
+      runInAction(() => {
+        this.user = user.data;
+        localStorage.setItem("token", user.token);
+        this.appLoaded = true;
+      })
+    }catch (error){
+      throw error;
+    }
+  }
+
+  // signup
+  @action signUp = async (values: IAuthFormValues) => {
+    try{
+      const user = await AuthRequest.signUp(values);
       runInAction(() => {
         this.user = user.data;
         localStorage.setItem("token", user.token);
@@ -84,7 +100,7 @@ class AppStore{
       const bookData = await BookRequest.getBookById(bookId);
       runInAction(() => {
         this.book = bookData.data;
-        this.book!.isBorrowed = this.user!.borrowedBooks.find(x => x._id === bookId) !== undefined;
+        this.book!.isBorrowed = this.user!.borrowedBooks.find(x => x === bookId) !== undefined;
         this.loadingBook = false;
       })
     }catch (error){
@@ -98,7 +114,6 @@ class AppStore{
     try{
       await BookRequest.borrowBook(bookId);
       runInAction(() => {
-        const bookBeingBorrowed = this.books?.find(x => x._id === bookId);
         if(this.books !== null){
           const bookBeingBorrowed = this.books.find(x => x._id === bookId);
           if(bookBeingBorrowed){
@@ -109,8 +124,8 @@ class AppStore{
         if(this.book !== null){
           this.book.isBorrowed = true;
           this.book.copies = this.book.copies - 1;
+          this.user!.borrowedBooks.push(this.book._id);
         }
-        this.user!.borrowedBooks.push(bookBeingBorrowed!);
         this.loadingBookAction = false;
       })
     }catch (error) {
@@ -135,13 +150,38 @@ class AppStore{
           this.book.isBorrowed = false;
           this.book.copies = this.book.copies + 1;
         }
-        this.user!.borrowedBooks = this.user!.borrowedBooks.filter(x => x._id !== bookId);
+
+        if(this.borrowedBooks !== null){
+          this.borrowedBooks = this.borrowedBooks.filter(x => x._id !== bookId);
+        }
+
+        this.user!.borrowedBooks = this.user!.borrowedBooks.filter(x => x !== bookId);
         this.loadingBookAction = false;
       })
     }catch (error) {
       runInAction(() => this.loadingBookAction = false);
       throw error;
     }
+  }
+
+  @action getBorrowedBooks = async () => {
+    this.loadingBooks = true;
+    try{
+      const bookData = await AuthRequest.getBorrowedBooks();
+      runInAction(() => {
+        this.borrowedBooks = bookData.data;
+        this.loadingBooks = false;
+      })
+    }catch (e) {
+      runInAction(() => this.loadingBooks = false);
+      throw e;
+    }
+  }
+
+  @action logout = async () => {
+    this.user = null;
+    localStorage.removeItem("token");
+    history.push("/login");
   }
 }
 

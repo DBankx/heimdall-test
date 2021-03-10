@@ -10,6 +10,7 @@ body{
   font-family: 'Karla', sans-serif !important;
   position: relative;
   overflow-x: hidden !important;
+  height: 100% !important;
 }
 
 .content{
@@ -176,6 +177,10 @@ footer{
   text-decoration: underline !important;
   color: #237EA3;
   font-size: .8em !important;
+}
+
+.not__found{
+  height: calc(100% - 50px) !important;
 }
 
 @media (max-width: 500px) {

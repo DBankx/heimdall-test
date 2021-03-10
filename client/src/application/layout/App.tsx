@@ -15,6 +15,7 @@ import SignUpForm from "../../features/auth/SignUpForm";
 import Footer from "../../features/home/Footer";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import NotFound from "./NotFound";
 
 const theme = extendTheme(chakraTheme);
 
@@ -43,6 +44,7 @@ function App() {
         <PrivateRoute exact path="/book/:id" component={BookPage} />
         <PrivateRoute exact path="/borrowed" component={BorrowedBooks} />
         <Route exact path="/signup" component={SignUpForm}/>
+        <Route exact component={NotFound} />
       </Switch>
       </div>
       <Footer />

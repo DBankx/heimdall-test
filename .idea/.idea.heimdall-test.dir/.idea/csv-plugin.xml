@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\client\src\features\book\BookPage.tsx">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\client\src\features\nav\Navbar.tsx">
           <value>
             <Attribute>

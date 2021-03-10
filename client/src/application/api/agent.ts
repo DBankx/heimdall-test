@@ -30,5 +30,8 @@ export const AuthRequest = {
 }
 
 export const BookRequest = {
-  getAllBooks: () => requests.get(`/books`)
+  getAllBooks: () => requests.get(`/books`),
+  getBookById: (bookId: string) => requests.get(`/books/${bookId}`),
+  borrowBook: (bookId: string) => requests.put(`/books/borrow/${bookId}`),
+  returnBook: (bookId: string) => requests.put(`/books/return/${bookId}`)
 }

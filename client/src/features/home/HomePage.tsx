@@ -5,9 +5,12 @@ import Search from "./Search";
 import storeContext from "../../application/store/store";
 import Loader from "../../application/layout/Spinner";
 import BookItem from "../book/BookItem";
+import {useQueryParam, StringParam} from "use-query-params";
+import BookPage from "../book/BookPage";
 
 const HomePage = () => {
-  const {loadingBooks, books, getAllBooks} = useContext(storeContext);
+  const {loadingBooks, books, getAllBooks, book} = useContext(storeContext);
+  const [bookPane, setBook] = useQueryParam("bookPane", StringParam);
   useEffect(() => {
     getAllBooks();
   }, [getAllBooks])
@@ -20,7 +23,7 @@ const HomePage = () => {
           <Search />
         </Box>
         <Box>
-          <SimpleGrid templateColumns={{xl: "0.8fr 1fr", lg: "0.8fr 1fr", sm: "1fr"}}>
+          <SimpleGrid spacing="1em" templateColumns={{xl: "0.8fr 1fr", lg: "0.8fr 1fr", sm: "1fr"}}>
             <Box>
               <Box>
                 <small style={{fontWeight: "bold"}}>{books.length} books found</small>
@@ -33,7 +36,9 @@ const HomePage = () => {
             </Box>
 
             <Box>
-
+              { bookPane && (
+                <BookPage />
+              )}
             </Box>
           </SimpleGrid>
         </Box>

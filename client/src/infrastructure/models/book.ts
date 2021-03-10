@@ -10,4 +10,5 @@
   pages: string;
   genre: string;
   author: string;
+  isBorrowed: boolean;
 }

@@ -3,15 +3,18 @@ import ReactDOM from 'react-dom';
 import App from './application/layout/App';
 import reportWebVitals from './reportWebVitals';
 import "./index.css";
-import {Router} from "react-router-dom";
+import {Router, Route} from "react-router-dom";
 import {createBrowserHistory} from "history";
+import {QueryParamProvider} from "use-query-params";
 
 export const history = createBrowserHistory();
 
 ReactDOM.render(
   <React.StrictMode>
     <Router history={history}>
+      <QueryParamProvider ReactRouterRoute={Route}>
     <App />
+      </QueryParamProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')

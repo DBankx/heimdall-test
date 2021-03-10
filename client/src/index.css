@@ -116,13 +116,14 @@ body{
 }
 
 .book__item__box{
-  padding: 1.25rem !important;
+  padding: 1.25rem;
   border: 0.0625rem solid #d4d2d0 !important;
   border-radius: 10px !important;
 }
 
 .book__item__box:hover{
   border: 0.0625rem solid #2557a7 !important;
+  cursor: pointer;
 }
 
 .book__item__img{
@@ -131,6 +132,7 @@ body{
   width: 100px !important;
   height: 100px !important;
 }
+
 
 .book__item__link{
   line-height: 1.625rem !important;
@@ -150,6 +152,25 @@ body{
   overflow: hidden;
   line-height: 1.5em;
   color: #767676 !important;
+}
+
+.maxed{
+  max-height: 100vh !important;
+  position: sticky;
+  top: 4em !important;
+}
+
+.borrow__btn{
+  background-color: #2557a7 !important;
+  border: 0.0625rem solid transparent !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.product__link{
+  text-decoration: underline !important;
+  color: #237EA3;
+  font-size: .8em !important;
 }
 
 @media (max-width: 500px) {

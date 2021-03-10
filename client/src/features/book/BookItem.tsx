@@ -5,6 +5,7 @@ import {StarIcon, CheckIcon, NotAllowedIcon} from "@chakra-ui/icons";
 import {IBook} from "../../infrastructure/models/book";
 import {Link} from "react-router-dom";
 import {BsBook, BsLink45Deg} from "react-icons/bs";
+import {StringParam, useQueryParam} from "use-query-params";
 
 interface IProps{
   book: IBook;
@@ -13,8 +14,10 @@ interface IProps{
 const BookItem = ({book}: IProps) => {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
   const iterator = [...Array(Math.floor(book.rating))];
+  const [bookPane, setBook] = useQueryParam("bookPane", StringParam);
+
   return (
-    <Box className="book__item__box">
+    <Box onClick={() => setBook(book._id)} className="book__item__box">
       <Badge colorScheme="purple">New</Badge>
       <HStack spacing="10px" alignItems="flex-start">
         <Image src={book.images[0]} alt="book-photo" className="book__item__img" />

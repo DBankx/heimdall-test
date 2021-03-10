@@ -25,6 +25,9 @@ class AppStore{
   @observable appLoaded = false;
   @observable books: IBook[] | null = null;
   @observable loadingBooks = false;
+  @observable book: IBook | null = null;
+  @observable loadingBook = false;
+  @observable loadingBookAction = false;
 
   // check if a user is logged in
   @computed get isLoggedIn(){
@@ -72,6 +75,72 @@ class AppStore{
     }catch (e) {
       runInAction(() => this.loadingBooks = false);
      throw e;
+    }
+  }
+
+  @action getBookById = async (bookId: string) => {
+    this.loadingBook = true;
+    try{
+      const bookData = await BookRequest.getBookById(bookId);
+      runInAction(() => {
+        this.book = bookData.data;
+        this.book!.isBorrowed = this.user!.borrowedBooks.find(x => x._id === bookId) !== undefined;
+        this.loadingBook = false;
+      })
+    }catch (error){
+      runInAction(() => this.loadingBook = false);
+      throw error;
+    }
+  }
+
+  @action borrowBook = async (bookId: string) => {
+    this.loadingBookAction = true;
+    try{
+      await BookRequest.borrowBook(bookId);
+      runInAction(() => {
+        const bookBeingBorrowed = this.books?.find(x => x._id === bookId);
+        if(this.books !== null){
+          const bookBeingBorrowed = this.books.find(x => x._id === bookId);
+          if(bookBeingBorrowed){
+            bookBeingBorrowed.isBorrowed = true;
+            bookBeingBorrowed.copies = bookBeingBorrowed.copies - 1;
+          }
+        }
+        if(this.book !== null){
+          this.book.isBorrowed = true;
+          this.book.copies = this.book.copies - 1;
+        }
+        this.user!.borrowedBooks.push(bookBeingBorrowed!);
+        this.loadingBookAction = false;
+      })
+    }catch (error) {
+      runInAction(() => this.loadingBookAction = false);
+      throw error;
+    }
+  }
+
+  @action returnBook = async (bookId: string) => {
+    this.loadingBookAction = true;
+    try{
+      await BookRequest.returnBook(bookId);
+      runInAction(() => {
+        if(this.books !== null){
+          const bookBeingReturned = this.books.find(x => x._id === bookId);
+          if(bookBeingReturned){
+            bookBeingReturned.isBorrowed = false;
+            bookBeingReturned.copies = bookBeingReturned.copies + 1;
+          }
+        }
+        if(this.book !== null){
+          this.book.isBorrowed = false;
+          this.book.copies = this.book.copies + 1;
+        }
+        this.user!.borrowedBooks = this.user!.borrowedBooks.filter(x => x._id !== bookId);
+        this.loadingBookAction = false;
+      })
+    }catch (error) {
+      runInAction(() => this.loadingBookAction = false);
+      throw error;
     }
   }
 }

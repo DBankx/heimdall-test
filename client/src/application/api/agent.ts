@@ -6,7 +6,7 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 // set the token on every request
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
-  const token = Cookies.get("Authorization");
+  const token =  localStorage.getItem("token");
   console.log(token);
   if(token){
     config.headers.Authorization = `Bearer ${token}`;
@@ -23,7 +23,12 @@ const requests = {
 }
 
 export const AuthRequest = {
-  signUp: (values: IAuthFormValues) : Promise<IUser> => requests.post(`/signup`, values),
-  login: (values: IAuthFormValues) : Promise<IUser> => requests.post(`/login`, values),
-  logout: (): Promise<Record<string, unknown>> => requests.post(`/logout`)
+  signUp: (values: IAuthFormValues)  => requests.post(`/signup`, values),
+  login: (values: IAuthFormValues)  => requests.post(`/login`, values),
+  logout: (): Promise<Record<string, unknown>> => requests.post(`/logout`),
+  getCurrentUser: () => requests.get(`/user`)
+}
+
+export const BookRequest = {
+  getAllBooks: () => requests.get(`/books`)
 }

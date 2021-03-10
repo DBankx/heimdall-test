@@ -22,9 +22,9 @@ class AuthController {
     const userData: CreateUserDto = req.body;
 
     try {
-      const { cookie, findUser } = await this.authService.login(userData);
-      res.setHeader('Set-Cookie', [cookie]);
-      res.status(200).json({ data: findUser, message: 'login' });
+      const { cookieString, token, findUser } = await this.authService.login(userData);
+      res.setHeader('Set-Cookie', [cookieString]);
+      res.status(200).json({ data: findUser, message: 'login', token });
     } catch (error) {
       next(error);
     }
@@ -41,6 +41,17 @@ class AuthController {
       next(error);
     }
   };
+
+  public getCurrentLoggedInUser = async (req: RequestWithUser, res: Response, next:NextFunction) => {
+    const userId: string = req.user._id;
+
+    try{
+      const userData: User = await this.authService.getCurrentLoggedInUser(userId);
+      res.status(200).json({data: userData, message: "get user"})
+    }catch (error){
+      next(error);
+    }
+  }
 }
 
 export default AuthController;

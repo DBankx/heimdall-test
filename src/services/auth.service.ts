@@ -22,7 +22,7 @@ class AuthService {
     return createUserData;
   }
 
-  public async login(userData: CreateUserDto): Promise<{ cookie: string; findUser: User }> {
+  public async login(userData: CreateUserDto): Promise<{ cookieString: string; findUser: User; token: string }> {
     if (isEmpty(userData)) throw new HttpException(400, "You're not userData");
 
     const findUser: User = await this.users.findOne({ email: userData.email });
@@ -32,9 +32,15 @@ class AuthService {
     if (!isPasswordMatching) throw new HttpException(409, "You're password not matching");
 
     const tokenData = this.createToken(findUser);
-    const cookie = this.createCookie(tokenData);
+    const {cookieString, token} = this.createCookie(tokenData);
 
-    return { cookie, findUser };
+    return { cookieString, token, findUser };
+  }
+
+  public async getCurrentLoggedInUser(userId: string) : Promise<User> {
+    const findUser: User = await this.users.findOne({ _id: userId}).select("-password");
+    if (!findUser) throw new HttpException(404, `User not found`);
+    return findUser;
   }
 
   public async logout(userData: User): Promise<User> {
@@ -54,8 +60,11 @@ class AuthService {
     return { expiresIn, token: jwt.sign(dataStoredInToken, secret, { expiresIn }) };
   }
 
-  public createCookie(tokenData: TokenData): string {
-    return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`;
+  public createCookie(tokenData: TokenData): {cookieString: string, token: string} {
+    return {
+      cookieString: `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`,
+      token: tokenData.token
+    }
   }
 }
 

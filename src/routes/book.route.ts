@@ -6,7 +6,7 @@ import {BookCreateDto} from "../dtos/books.dto";
 import authMiddleware from "../middlewares/auth.middleware";
 
 class BooksRoute implements Route {
-  public path = "/books";
+  public path = "/api/books";
   public router = Router();
   public bookController = new BookController();
 

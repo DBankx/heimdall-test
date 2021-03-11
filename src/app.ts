@@ -58,7 +58,7 @@ class App {
   private initializeMiddlewares() {
     if (this.env === 'production') {
       this.app.use(morgan('combined', { stream }));
-      this.app.use(cors({ origin: 'your.domain.com', credentials: true }));
+      this.app.use(cors({ origin: 'https://heimdall-job.herokuapp.com/', credentials: true }));
     } else if (this.env === 'development') {
       this.app.use(morgan('dev', { stream }));
       this.app.use(cors({ origin: true, credentials: true }));
@@ -74,7 +74,7 @@ class App {
 
   private initializeRoutes(routes: Routes[]) {
     routes.forEach(route => {
-      this.app.use('/', route.router);
+      this.app.use('/api', route.router);
     });
   }
 
@@ -99,11 +99,11 @@ class App {
   }
 
   private deployApplication(){
-    if(process.env.NODE_ENV === "production"){
-      this.app.use(express.static(path.join(__dirname, "/client/build")));
+    if(this.env === "production"){
+      this.app.use(express.static(path.join(__dirname, "../client/build")));
 
       this.app.get("*", (req: Request, res: Response) =>
-        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+        res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"))
       );
     } else {
       this.app.get("/", (req: Request, res: Response) => res.send("server is running"))

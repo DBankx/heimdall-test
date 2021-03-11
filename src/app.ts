@@ -103,10 +103,10 @@ class App {
 
   private deployApplication(){
     if(this.env === "production"){
-      this.app.use(express.static(path.join(__dirname, "../client/build")));
+      this.app.use(express.static(path.join(__dirname, "client")));
 
       this.app.get("*", (req: Request, res: Response) =>
-        res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"))
+        res.sendFile(path.resolve(__dirname, "client", "index.html"))
       );
     } else {
       this.app.get("/", (req: Request, res: Response) => res.send("server is running"))

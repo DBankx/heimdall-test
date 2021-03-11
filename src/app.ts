@@ -21,7 +21,7 @@ class App {
 
   constructor(routes: Routes[]) {
     this.app = express();
-    this.port = process.env.PORT || 3000;
+    this.port = process.env.PORT || 5000;
     this.env = process.env.NODE_ENV || 'development';
 
     this.connectToDatabase();
@@ -100,10 +100,10 @@ class App {
 
   private deployApplication(){
     if(process.env.NODE_ENV === "production"){
-      this.app.use(express.static(path.join(__dirname, "/client/build")));
+      this.app.use(express.static(path.join(__dirname, "../client/build")));
 
       this.app.get("*", (req: Request, res: Response) =>
-        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+        res.sendFile(path.resolve(__dirname+"/client/build/index.html"))
       );
     } else {
       this.app.get("/", (req: Request, res: Response) => res.send("server is running"))

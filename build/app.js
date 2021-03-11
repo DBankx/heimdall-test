@@ -41,6 +41,9 @@ class App {
         if (this.env !== 'production') {
             mongoose_1.set('debug', true);
         }
+        if (this.env === "production") {
+            console.log("this is prod");
+        }
         mongoose_1.connect(database_1.dbConnection.url, database_1.dbConnection.options)
             .then(() => {
             logger_1.logger.info('🟢 The database is connected.');
@@ -52,7 +55,7 @@ class App {
     initializeMiddlewares() {
         if (this.env === 'production') {
             this.app.use(morgan_1.default('combined', { stream: logger_1.stream }));
-            this.app.use(cors_1.default({ origin: 'your.domain.com', credentials: true }));
+            this.app.use(cors_1.default({ origin: 'https://heimdall-job.herokuapp.com/', credentials: true }));
         }
         else if (this.env === 'development') {
             this.app.use(morgan_1.default('dev', { stream: logger_1.stream }));
@@ -67,7 +70,7 @@ class App {
     }
     initializeRoutes(routes) {
         routes.forEach(route => {
-            this.app.use('/', route.router);
+            this.app.use('/api', route.router);
         });
     }
     initializeSwagger() {
@@ -88,9 +91,9 @@ class App {
         this.app.use(error_middleware_1.default);
     }
     deployApplication() {
-        if (process.env.NODE_ENV === "production") {
-            this.app.use(express_1.default.static(path_1.default.join(__dirname, "../client/build")));
-            this.app.get("*", (req, res) => res.sendFile(path_1.default.resolve(__dirname + "/client/build/index.html")));
+        if (this.env === "production") {
+            this.app.use(express_1.default.static(path_1.default.join(__dirname, "../build/client")));
+            this.app.get("*", (req, res) => res.sendFile(path_1.default.resolve(__dirname, "../build", "client", "index.html")));
         }
         else {
             this.app.get("/", (req, res) => res.send("server is running"));

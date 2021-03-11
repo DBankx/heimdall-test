@@ -8,7 +8,7 @@ const users_controller_1 = __importDefault(require("../controllers/users.control
 const auth_middleware_1 = __importDefault(require("../middlewares/auth.middleware"));
 class UsersRoute {
     constructor() {
-        this.path = '/api/users';
+        this.path = '/users';
         this.router = express_1.Router();
         this.usersController = new users_controller_1.default();
         this.initializeRoutes();

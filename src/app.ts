@@ -46,6 +46,9 @@ class App {
     if (this.env !== 'production') {
       set('debug', true);
     }
+    if(this.env === "production") {
+      console.log("this is prod")
+    }
     connect(dbConnection.url, dbConnection.options)
       .then(() => {
         logger.info('🟢 The database is connected.');
@@ -100,10 +103,10 @@ class App {
 
   private deployApplication(){
     if(this.env === "production"){
-      this.app.use(express.static(path.join(__dirname, "../client/build")));
+      this.app.use(express.static(path.join(__dirname, "../build/client")));
 
       this.app.get("*", (req: Request, res: Response) =>
-        res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"))
+        res.sendFile(path.resolve(__dirname, "../build", "client", "index.html"))
       );
     } else {
       this.app.get("/", (req: Request, res: Response) => res.send("server is running"))

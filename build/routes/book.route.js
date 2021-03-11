@@ -10,7 +10,7 @@ const books_dto_1 = require("../dtos/books.dto");
 const auth_middleware_1 = __importDefault(require("../middlewares/auth.middleware"));
 class BooksRoute {
     constructor() {
-        this.path = "/api/books";
+        this.path = "/books";
         this.router = express_1.Router();
         this.bookController = new book_controller_1.default();
         this.initializeRoutes();

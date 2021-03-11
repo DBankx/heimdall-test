@@ -17,7 +17,8 @@
     "lint:fix": "npm run lint -- --fix",
     "postinstall": "tsc",
     "deploy": "git add . && git commit -m Heroku && git push heroku main",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "postbuild": "cd client && npm install && npm run build"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

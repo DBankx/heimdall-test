@@ -15,9 +15,9 @@ class AuthRoute {
         this.initializeRoutes();
     }
     initializeRoutes() {
-        this.router.post('/api/signup', validation_middleware_1.default(users_dto_1.CreateUserDto, 'body'), this.authController.signUp);
-        this.router.post('/api/login', validation_middleware_1.default(users_dto_1.CreateUserDto, 'body'), this.authController.logIn);
-        this.router.get('/api/user', auth_middleware_1.default, this.authController.getCurrentLoggedInUser);
+        this.router.post('/signup', validation_middleware_1.default(users_dto_1.CreateUserDto, 'body'), this.authController.signUp);
+        this.router.post('/login', validation_middleware_1.default(users_dto_1.CreateUserDto, 'body'), this.authController.logIn);
+        this.router.get('/user', auth_middleware_1.default, this.authController.getCurrentLoggedInUser);
     }
 }
 exports.default = AuthRoute;

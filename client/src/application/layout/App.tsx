@@ -47,7 +47,7 @@ function App() {
         <Route exact component={NotFound} />
       </Switch>
       </div>
-      <Footer />
+      {pathname !== "/signup" && pathname !== "/login" && <Footer />}
     </div>
     </ChakraProvider>
   );

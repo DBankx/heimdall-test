@@ -61,7 +61,7 @@ class App {
   private initializeMiddlewares() {
     if (this.env === 'production') {
       this.app.use(morgan('combined', { stream }));
-      this.app.use(cors());
+      this.app.use(cors({ origin: 'https://heimdall-frontend.herokuapp.com', credentials: true }));
     } else if (this.env === 'development') {
       this.app.use(morgan('dev', { stream }));
       this.app.use(cors({ origin: true, credentials: true }));
